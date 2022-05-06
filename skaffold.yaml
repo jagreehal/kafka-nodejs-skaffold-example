@@ -1,0 +1,45 @@
+apiVersion: skaffold/v2beta28
+kind: Config
+metadata:
+  name: kafka-example
+build:
+  artifacts:
+    - image: kafka-producer
+      context: kafka-producer
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        infer:
+          - 'kafka-producer/src/**/*.ts'
+    - image: kafka-consumer-1
+      context: kafka-consumer-1
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        infer:
+          - 'kafka-consumer-1/src/**/*.ts'
+deploy:
+  kubeContext: jag
+  kubectl:
+    manifests:
+      - kafka-producer/k8s/deployment.yaml
+      - kafka-consumer-1/k8s/deployment.yaml
+      - k8s/*.yaml
+
+portForward:
+  - resourceType: service
+    resourceName: kafka-producer
+    port: 8081
+    localPort: 8081
+  - resourceType: service
+    resourceName: kafka-consumer-1
+    port: 8082
+    localPort: 8082
+  - resourceType: service
+    resourceName: zookeeper
+    port: 2181
+    localPort: 2181
+  - resourceType: service
+    resourceName: kafka
+    port: 9092
+    localPort: 9092

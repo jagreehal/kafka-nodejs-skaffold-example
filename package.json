@@ -1,0 +1,19 @@
+{
+  "name": "kafka-nodejs-skaffold-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "skaffold dev"
+  },
+  "devDependencies": {
+    "prettier": "^1.17.1"
+  },
+  "keywords": [
+    "kafka",
+    "skaffold",
+    "nodejs"
+  ],
+  "author": "Jag Reehal",
+  "license": "ISC"
+}
