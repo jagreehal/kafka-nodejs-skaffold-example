@@ -5,25 +5,24 @@ metadata:
 build:
   artifacts:
     - image: kafka-producer
-      context: kafka-producer
+      context: apps/kafka-producer
       docker:
         dockerfile: Dockerfile
       sync:
         infer:
-          - 'kafka-producer/src/**/*.ts'
+          - 'apps/kafka-producer/src/**/*.ts'
     - image: kafka-consumer-1
-      context: kafka-consumer-1
+      context: apps/kafka-consumer-1
       docker:
         dockerfile: Dockerfile
       sync:
         infer:
-          - 'kafka-consumer-1/src/**/*.ts'
+          - 'apps/kafka-consumer-1/src/**/*.ts'
 deploy:
   kubeContext: jag
   kubectl:
     manifests:
-      - kafka-producer/k8s/deployment.yaml
-      - kafka-consumer-1/k8s/deployment.yaml
+      - apps/**/k8s/*.yaml
       - k8s/*.yaml
 
 portForward:
@@ -35,11 +34,11 @@ portForward:
     resourceName: kafka-consumer-1
     port: 8082
     localPort: 8082
-  - resourceType: service
-    resourceName: zookeeper
-    port: 2181
-    localPort: 2181
-  - resourceType: service
-    resourceName: kafka
-    port: 9092
-    localPort: 9092
+  # - resourceType: service
+  #   resourceName: zookeeper
+  #   port: 2181
+  #   localPort: 2181
+  # - resourceType: service
+  #   resourceName: kafka
+  #   port: 9092
+  #   localPort: 9092

@@ -1,8 +1,11 @@
 import express from 'express';
 import { Kafka } from 'kafkajs';
-
+import { z } from 'zod';
+import { AnExampleEvent } from '@jag/schemas';
 const app = express();
 const port = 8081;
+
+type AnExampleEventType = z.infer<typeof AnExampleEvent>;
 
 app.get('/', (req, res) => res.send('Producer Ready'));
 
@@ -13,11 +16,17 @@ app.get('/publish', async (req, res) => {
       brokers: ['localhost:9092'],
       clientId: 'kafka-producer'
     });
+
+    const message: AnExampleEventType = {
+      id: Math.random().toString(),
+      username: 'Bob'
+    };
+
     const producer = kafka.producer();
     await producer.connect();
     await producer.send({
       topic: 'EXAMPLE_EVENT_TOPIC',
-      messages: [{ value: 'Hello KafkaJS user!' }]
+      messages: [{ value: JSON.stringify(message) }]
     });
     res.send('Published!');
   } catch (e) {

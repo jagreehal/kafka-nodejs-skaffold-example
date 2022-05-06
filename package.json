@@ -1,18 +1,25 @@
 {
-  "name": "kafka-nodejs-skaffold-example",
+  "name": "@jag/kafka-nodejs-skaffold-example",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "skaffold dev"
+    "build": "turbo run build",
+    "dev": "skaffold dev",
+    "local:dev": "turbo run dev --parallel",
+    "lint": "turbo run lint"
   },
   "devDependencies": {
-    "prettier": "^1.17.1"
+    "eslint": "8.14.0",
+    "prettier": "^2.6.2",
+    "turbo": "^1.2.6"
   },
   "keywords": [
     "kafka",
     "skaffold",
-    "nodejs"
+    "nodejs",
+    "typescript",
+    "zod"
   ],
   "author": "Jag Reehal",
   "license": "ISC"

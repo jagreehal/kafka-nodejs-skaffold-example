@@ -1,5 +1,8 @@
 import express from 'express';
 import { Kafka } from 'kafkajs';
+import { z } from 'zod';
+import { AnExampleEvent } from '@jag/schemas';
+type AnExampleEventType = z.infer<typeof AnExampleEvent>;
 
 const app = express();
 const port = 8082;
@@ -20,14 +23,19 @@ const run = async () => {
   await consumer.subscribe({ topic, fromBeginning: true });
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
-      kafka.logger().info('Message processed', {
-        topic,
-        partition,
-        offset: message.offset,
-        timestamp: message.timestamp,
-        key: message.key?.toString(),
-        value: message.value?.toString()
-      });
+      let event: AnExampleEventType;
+      try {
+        event = AnExampleEvent.parse(JSON.parse(message.value!.toString()));
+        kafka.logger().info('Message processed', {
+          topic,
+          partition,
+          offset: message.offset,
+          timestamp: message.timestamp,
+          event
+        });
+      } catch (e) {
+        console.error(`Error parsing message: ${message.value!.toString()}`, e);
+      }
     }
   });
 };
