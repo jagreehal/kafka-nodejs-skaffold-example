@@ -11,19 +11,17 @@ build:
       sync:
         infer:
           - 'apps/kafka-producer/src/**/*.ts'
-    - image: kafka-consumer-1
-      context: apps/kafka-consumer-1
+    - image: kafka-consumer
+      context: apps/kafka-consumer
       docker:
         dockerfile: Dockerfile
       sync:
         infer:
-          - 'apps/kafka-consumer-1/src/**/*.ts'
+          - 'apps/kafka-consumer/src/**/*.ts'
 deploy:
-  kubeContext: jag
   kubectl:
     manifests:
-      - apps/**/k8s/*.yaml
-      - k8s/*.yaml
+      - infra/k8s/*.yaml
 
 portForward:
   - resourceType: service
@@ -31,14 +29,6 @@ portForward:
     port: 8081
     localPort: 8081
   - resourceType: service
-    resourceName: kafka-consumer-1
+    resourceName: kafka-consumer
     port: 8082
     localPort: 8082
-  # - resourceType: service
-  #   resourceName: zookeeper
-  #   port: 2181
-  #   localPort: 2181
-  # - resourceType: service
-  #   resourceName: kafka
-  #   port: 9092
-  #   localPort: 9092
