@@ -28,3 +28,4 @@ spec:
           image: kafka-producer
           ports:
             - containerPort: 8081
+          imagePullPolicy: IfNotPresent

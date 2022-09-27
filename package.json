@@ -7,7 +7,8 @@
     "build": "turbo run build",
     "dev": "skaffold dev",
     "local:dev": "turbo run dev --parallel",
-    "lint": "turbo run lint"
+    "lint": "turbo run lint",
+    "install:infra": "./scripts/infra.sh"
   },
   "devDependencies": {
     "eslint": "8.14.0",
@@ -18,8 +19,7 @@
     "kafka",
     "skaffold",
     "nodejs",
-    "typescript",
-    "zod"
+    "typescript"
   ],
   "author": "Jag Reehal",
   "license": "ISC"
